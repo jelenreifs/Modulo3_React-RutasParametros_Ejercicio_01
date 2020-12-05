@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import { BrowserRouter, Route, Link, useParams } from "react-router-dom";
+
+const Saludo = () => {
+  //let valor = props.nombre;
+  
+  const { nombre } = useParams();
+
+  return (
+    <h1>
+      Hola {nombre}
+    </h1>
+  );
+};
 
 function App() {
+  const [nombre, setNombre] = useState("");
+
+  const handleInput = (e) => { 
+    setNombre(e.target.value)
+  }
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <BrowserRouter>
+      <header>
+        <Link exact to="/">Inicio</Link>
       </header>
-    </div>
+
+      <Route exact path="/">
+        <input type="text" value={nombre} onChange={handleInput} />
+         
+        <Link exact to={`/saludo/${nombre}`}>
+          <p>Saludar</p>
+        </Link>
+      </Route>
+      
+      <Route exact path="/saludo/:nombre">
+        <Saludo />
+      </Route>
+    </BrowserRouter>
   );
 }
 
